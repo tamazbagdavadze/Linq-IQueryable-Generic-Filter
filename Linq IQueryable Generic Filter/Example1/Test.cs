@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Linq_IQueryable_Generic_Filter;
-using Args = Linq_IQueryable_Generic_Filter.Trio<string, System.TypeCode, Linq_IQueryable_Generic_Filter.FilterConstraint>;
+using Pair = Linq_IQueryable_Generic_Filter.Pair<string, Linq_IQueryable_Generic_Filter.FilterConstraint>;
 
 namespace Example1
 {
@@ -14,11 +14,10 @@ namespace Example1
         {
             var filter = new Filter
             {
-                ConstraintList = new List<Args>
+                ConstraintList = new List<Pair>
                 {
-                    new Args
+                    new Pair
                     {
-                        TypeCode.String,
                         "Name",
                         new FilterConstraint
                         {
@@ -26,13 +25,12 @@ namespace Example1
                             EndsWith = "2"
                         }
                     },
-                    new Args
+                    new Pair
                     {
-                        TypeCode.Int16,
                         "Age",
                         new FilterConstraint
                         {
-                            Equals = 18
+                            Equals = (short)18
                         }
                     }
                 },
@@ -47,15 +45,37 @@ namespace Example1
         {
             var filter = new Filter
             {
-                ConstraintList = new List<Args>
+                ConstraintList = new List<Pair>
                 {
-                    new Args
+                    new Pair
                     {
-                        TypeCode.DateTime,
                         "BirthDate",
                         new FilterConstraint
                         {
                             LessThen = DateTime.Parse("10/10/2001 12:00:00 AM") //DateTime.Now
+                        }
+                    }
+                },
+                Or = true
+            };
+
+            var personSet = Data.GetPersons(filter).ToList();
+
+            ShowData(personSet);
+        }
+
+        public void TestTest()
+        {
+            var filter = new Filter
+            {
+                ConstraintList = new List<Pair>
+                {
+                    new Pair
+                    {
+                        "BirthDate",
+                        new FilterConstraint
+                        {
+                            Equals = DateTime.Parse("10/10/2001 12:00:00 AM") //DateTime.Now
                         }
                     }
                 },

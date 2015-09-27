@@ -19,16 +19,18 @@ namespace Linq_IQueryable_Generic_Filter
             {
                 var constraintsValues = args.Constraints;
                 var propName = args.Key;
-                var type = args.Type;
+                //var type = args.Type;
                 
                 #region "Equals"
 
                 if (constraintsValues.Equals != null)
                 {
+                    var parameterType = constraintsValues.Equals.GetType();
+
                     var newExp = (Expression<Func<T, bool>>) typeof (ExpressionHelpers)
                         .GetMethod("PredicateEquals")
-                        .MakeGenericMethod(typeof (T), Type.GetType("System." + type))
-                        .Invoke(null, new[] {propName, Convert.ChangeType(constraintsValues.Equals, type)});
+                        .MakeGenericMethod(typeof (T), parameterType)
+                        .Invoke(null, new[] {propName, Convert.ChangeType(constraintsValues.Equals, Type.GetTypeCode(parameterType))});
 
                     predicationExpressionList.Add(newExp);
                 }
@@ -61,20 +63,26 @@ namespace Linq_IQueryable_Generic_Filter
 
                 if (constraintsValues.LessThen != null)
                 {
+                    var parameterType = constraintsValues.LessThen.GetType();
+
                     var newExp = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
                        .GetMethod("PredicateLess")
-                       .MakeGenericMethod(typeof(T), Type.GetType("System." + type))
-                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.LessThen, type) });
+//                       .MakeGenericMethod(typeof(T), Type.GetType("System." + type))
+                       .MakeGenericMethod(typeof(T), parameterType)
+                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.LessThen, Type.GetTypeCode(parameterType)) });
                     
                     predicationExpressionList.Add(newExp);
                 }
 
                 if (constraintsValues.MoreThen != null)
                 {
+                    var parameterType = constraintsValues.MoreThen.GetType();
+
                     var newExp = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
                        .GetMethod("PredicateMore")
-                       .MakeGenericMethod(typeof(T), Type.GetType("System." + type))
-                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.MoreThen, type) });
+//                       .MakeGenericMethod(typeof(T), Type.GetType("System." + type))
+                       .MakeGenericMethod(typeof(T), parameterType)
+                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.MoreThen, Type.GetTypeCode(parameterType)) });
 
                     predicationExpressionList.Add(newExp);
                 }

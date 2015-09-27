@@ -32,11 +32,9 @@ namespace Linq_IQueryable_Generic_Filter
     }
 
     [StructLayout(LayoutKind.Auto)]
-    public struct Trio<T,TR,TL> : IEnumerable
+    public struct Pair<T,TL> : IEnumerable
     {
         public T Key;
-
-        public TR Type;
 
         public TL Constraints;
 
@@ -48,11 +46,6 @@ namespace Linq_IQueryable_Generic_Filter
         public void Add(T param)
         {
             Key = param;
-        }
-
-        public void Add(TR param)
-        {
-            Type = param;
         }
 
         public IEnumerator GetEnumerator()

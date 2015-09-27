@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using Args = Linq_IQueryable_Generic_Filter.Trio<string, System.TypeCode, Linq_IQueryable_Generic_Filter.FilterConstraint>;
+using Pair = Linq_IQueryable_Generic_Filter.Pair<string, Linq_IQueryable_Generic_Filter.FilterConstraint>;
 
 namespace Linq_IQueryable_Generic_Filter
 {
     public class Filter
     {
-        public Filter(List<Args> list = null)
+        public Filter(List<Pair> list = null)
         {
-            ConstraintList = list ?? new List<Args>();
+            ConstraintList = list ?? new List<Pair>();
         }
 
-        public List<Args> ConstraintList { get; set; }
+        public List<Pair> ConstraintList { get; set; }
 
         public bool? Or { get; set; }
 

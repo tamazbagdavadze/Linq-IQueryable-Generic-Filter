@@ -10,8 +10,10 @@ namespace Example1
         {
             var test = new Test();
 
-            //test.TestStringAndInt();
+            test.TestStringAndInt();
             test.TestLess();
+            test.TestTest();
+            
 
             Console.ReadLine();
         }
