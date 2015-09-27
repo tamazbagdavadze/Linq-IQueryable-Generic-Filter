@@ -72,7 +72,7 @@ namespace Linq_IQueryable_Generic_Filter
             var temp = Expression.Call(Expression.Convert(member, typeof (object)),
                 typeof (object).GetMethod("ToString"));
 
-            var refmethod = typeof (string).GetMethod("StartsWith", new[] {typeof (string)});
+            var refmethod = typeof (string).GetMethod("EndsWith", new[] {typeof (string)});
             var value = Expression.Constant(key, typeof (string));
             var containsMethodExp = Expression.Call(temp, refmethod, value);
 

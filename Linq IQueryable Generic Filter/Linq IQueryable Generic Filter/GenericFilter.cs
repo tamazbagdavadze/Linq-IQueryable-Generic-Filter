@@ -31,7 +31,7 @@ namespace Linq_IQueryable_Generic_Filter
                     var newExp = (Expression<Func<T, bool>>) typeof (ExpressionHelpers)
                         .GetMethod("PredicateEquals")
                         .MakeGenericMethod(typeof (T), Type.GetType("System." + type))
-                        .Invoke(null, new[] {propName, constraintsValues.Equals});
+                        .Invoke(null, new[] {propName, Convert.ChangeType(constraintsValues.Equals, type)});
 
                     predicationExpressionList.Add(newExp);
                 }
@@ -54,51 +54,18 @@ namespace Linq_IQueryable_Generic_Filter
 
                 if (constraintsValues.EndsWith != null)
                 {
-                    var newExp = ExpressionHelpers.PredicateEndsWith<T>(propName, constraintsValues.StartsWith);
+                    var newExp = ExpressionHelpers.PredicateEndsWith<T>(propName, constraintsValues.EndsWith);
                     predicationExpressionList.Add(newExp);
                 }
 
                 #endregion
                 
-
-                #region "old integer"
-
-//                if (constraintsValues.EqualsInt8 != null)
-//                {
-//                    var newExp = ExpressionHelpers.PredicateEquals<T, sbyte>(propName, constraintsValues.EqualsInt8.Value);
-//                    predicationExpressionList.Add(newExp);
-//                }
-//
-//                if (constraintsValues.EqualsInt16 != null)
-//                {
-//                    var newExp = ExpressionHelpers.PredicateEquals<T, short>(propName, constraintsValues.EqualsInt16.Value);
-//                    predicationExpressionList.Add(newExp);
-//                }
-//
-//                if (constraintsValues.EqualsInt32 != null)
-//                {
-//                    var newExp = ExpressionHelpers.PredicateEquals<T, int>(propName, constraintsValues.EqualsInt32.Value);
-//                    predicationExpressionList.Add(newExp);
-//                }
-//
-//                if (constraintsValues.EqualsInt64 != null)
-//                {
-//                    var newExp = ExpressionHelpers.PredicateEquals<T, long>(propName, constraintsValues.EqualsInt64.Value);
-//                    predicationExpressionList.Add(newExp);
-//                }
-
-                #endregion
+                
             }
-
 
             Expression<Func<T, bool>> predicationDelegateExpression = filter.Or ?? false
                 ? predicationExpressionList.Aggregate(ExpressionHelpers.CombineOr)
                 : predicationExpressionList.Aggregate(ExpressionHelpers.CombineAnd);
-
-            /*  predicationDelegateExpression =
-                predicationExpressionList.Aggregate(filter.Or
-                    ? (Func<Expression<Func<T, bool>>, Expression<Func<T, bool>>, Expression<Func<T, bool>>>)CombineOr
-                    : CombineAnd);*/
 
             var resultList = predicationDelegateExpression == null ? list : list.Where(predicationDelegateExpression);
 

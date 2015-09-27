@@ -1,23 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Linq_IQueryable_Generic_Filter;
-
+using Args = Linq_IQueryable_Generic_Filter.Trio<string, System.TypeCode, Linq_IQueryable_Generic_Filter.FilterConstraint>;
 namespace Example1
 {
     class Test
     {
-        private TestDBContainer Context { get; set; } = new TestDBContainer();
 
-        public IEnumerable<Person> GetPersons(Filter filter)
+        private Dal Data { get; } = new Dal();
+
+        public void TestStringAndInt()
         {
-            var persons = Context.People.AsQueryable();
+            var filter = new Filter
+            {
+                ConstraintList = new List<Args>
+                {
+                     new Args
+                    {
+                        TypeCode.String,
+                        "Name",
+                        new FilterConstraint
+                        {
+                            StartsWith = "tazo",
+                            EndsWith = "2"
+                        }
+                    },
+                     new Args
+                     {
+                         TypeCode.Int16,
+                         "Age",
+                         new FilterConstraint
+                         {
+                             Equals = 18
+                         }
+                     }
+                },
+                Or = true
+            };
 
-            var filteredPersons = GenericFilter.Filter(filter, persons);
-
-            return filteredPersons;
-        } 
+            var personSet = Data.GetPersons(filter).ToList();
+            Console.WriteLine("--------------- Results : ---------------");
+            foreach (var p in personSet)
+            {
+                Console.WriteLine($"{p.Age} {p.BirthDate} {p.Id} {p.IsMan} {p.Name} {p.Salary}");
+            }
+        }
     }
 }

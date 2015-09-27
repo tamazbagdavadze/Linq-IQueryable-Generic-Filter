@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dal.cs" />
     <Compile Include="Person.cs">
       <DependentUpon>TestDB.tt</DependentUpon>
     </Compile>
