@@ -17,7 +17,5 @@ namespace Linq_IQueryable_Generic_Filter
         public int? Take { get; set; }
         public int? Skip { get; set; }
 
-        public List<int> IncludedIDs { get; set; }
-        public List<int> ExcludedIDs { get; set; }
     }
 }

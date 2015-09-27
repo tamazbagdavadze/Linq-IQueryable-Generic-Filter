@@ -6,9 +6,8 @@ using Args = Linq_IQueryable_Generic_Filter.Trio<string, System.TypeCode, Linq_I
 
 namespace Example1
 {
-    class Test
+    internal class Test
     {
-
         private Dal Data { get; } = new Dal();
 
         public void TestStringAndInt()
@@ -17,7 +16,7 @@ namespace Example1
             {
                 ConstraintList = new List<Args>
                 {
-                     new Args
+                    new Args
                     {
                         TypeCode.String,
                         "Name",
@@ -27,21 +26,21 @@ namespace Example1
                             EndsWith = "2"
                         }
                     },
-                     new Args
-                     {
-                         TypeCode.Int16,
-                         "Age",
-                         new FilterConstraint
-                         {
-                             Equals = 18
-                         }
-                     }
+                    new Args
+                    {
+                        TypeCode.Int16,
+                        "Age",
+                        new FilterConstraint
+                        {
+                            Equals = 18
+                        }
+                    }
                 },
                 Or = true
             };
 
             var personSet = Data.GetPersons(filter).ToList();
-            showData(personSet);
+            ShowData(personSet);
         }
 
         public void TestLess()
@@ -50,25 +49,25 @@ namespace Example1
             {
                 ConstraintList = new List<Args>
                 {
-                   new Args
-                   {
-                       TypeCode.DateTime,
-                       "BirthDate",
-                       new FilterConstraint
-                       {
-                           LessThen = DateTime.Parse("10/10/2001 12:00:00 AM") //DateTime.Now
-                       }
-                   }
+                    new Args
+                    {
+                        TypeCode.DateTime,
+                        "BirthDate",
+                        new FilterConstraint
+                        {
+                            LessThen = DateTime.Parse("10/10/2001 12:00:00 AM") //DateTime.Now
+                        }
+                    }
                 },
                 Or = true
             };
 
             var personSet = Data.GetPersons(filter).ToList();
-           
-            showData(personSet);
+
+            ShowData(personSet);
         }
 
-        void showData(IEnumerable<Person> persons)
+        private void ShowData(IEnumerable<Person> persons)
         {
             Console.WriteLine("--------------- Results : ---------------");
             foreach (var p in persons)

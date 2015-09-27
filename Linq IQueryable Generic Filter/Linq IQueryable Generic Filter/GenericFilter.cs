@@ -78,6 +78,7 @@ namespace Linq_IQueryable_Generic_Filter
 
                     predicationExpressionList.Add(newExp);
                 }
+
                 #endregion
             }
             
@@ -85,15 +86,14 @@ namespace Linq_IQueryable_Generic_Filter
                 ? predicationExpressionList.Aggregate(ExpressionHelpers.CombineOr)
                 : predicationExpressionList.Aggregate(ExpressionHelpers.CombineAnd);
 
-            var resultList = predicationDelegateExpression == null ? list : list.Where(predicationDelegateExpression);
-
-
+            list = predicationDelegateExpression == null ? list : list.Where(predicationDelegateExpression);
+            
             if (filter.Skip != null)
-                resultList = resultList.Skip(filter.Skip.Value);
+                list = list.Skip(filter.Skip.Value);
             if (filter.Take != null)
-                resultList = resultList.Take(filter.Take.Value);
+                list = list.Take(filter.Take.Value);
 
-            return resultList;
+            return list;
         }
     }
 }

@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 
 namespace Linq_IQueryable_Generic_Filter
 {
-    [StructLayout(LayoutKind.Auto)]
-    public struct DateTimeRange
-    {
-        public DateTime? From { get; set; }
-        public DateTime? To { get; set; }
-    }
+//    [StructLayout(LayoutKind.Auto)]
+//    public struct DateTimeRange
+//    {
+//        public DateTime? From { get; set; }
+//        public DateTime? To { get; set; }
+//    }
 
 
     [StructLayout(LayoutKind.Auto)]
@@ -25,11 +25,8 @@ namespace Linq_IQueryable_Generic_Filter
         public string StartsWith { get; set; }
         public string EndsWith { get; set; }
         
-        public DateTimeRange? DateTimeRange { get; set; } 
-
-        public int? CountMorethan { get; set; }
-        public int? CountLessthan { get; set; }
-
+        //public DateTimeRange? DateTimeRange { get; set; } 
+        
 
         //TODO Random shit
     }
