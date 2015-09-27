@@ -11,9 +11,8 @@ namespace Linq_IQueryable_Generic_Filter
 //        public DateTime? To { get; set; }
 //    }
 
-
-    [StructLayout(LayoutKind.Auto)]
-    public struct FilterConstraint
+        
+    public class FilterConstraint
     {
         public new object Equals { get; set; }
 
@@ -30,20 +29,19 @@ namespace Linq_IQueryable_Generic_Filter
 
         //TODO Random shit
     }
-
-    [StructLayout(LayoutKind.Auto)]
-    public struct Pair<T,TL> : IEnumerable
+    
+    public class Pair : IEnumerable
     {
-        public T Key;
+        public string Key;
 
-        public TL Constraints;
+        public FilterConstraint Constraints;
 
-        public void Add(TL param)
+        public void Add(FilterConstraint param)
         {
             Constraints = param;
         }
 
-        public void Add(T param)
+        public void Add(string param)
         {
             Key = param;
         }

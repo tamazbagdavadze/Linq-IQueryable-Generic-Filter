@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Linq_IQueryable_Generic_Filter;
-using Pair = Linq_IQueryable_Generic_Filter.Pair<string, Linq_IQueryable_Generic_Filter.FilterConstraint>;
 
 namespace Example1
 {

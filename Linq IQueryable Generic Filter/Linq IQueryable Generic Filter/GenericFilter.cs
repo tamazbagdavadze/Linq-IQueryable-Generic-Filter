@@ -19,7 +19,6 @@ namespace Linq_IQueryable_Generic_Filter
             {
                 var constraintsValues = args.Constraints;
                 var propName = args.Key;
-                //var type = args.Type;
                 
                 #region "Equals"
 
@@ -67,7 +66,6 @@ namespace Linq_IQueryable_Generic_Filter
 
                     var newExp = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
                        .GetMethod("PredicateLess")
-//                       .MakeGenericMethod(typeof(T), Type.GetType("System." + type))
                        .MakeGenericMethod(typeof(T), parameterType)
                        .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.LessThen, Type.GetTypeCode(parameterType)) });
                     
@@ -80,7 +78,6 @@ namespace Linq_IQueryable_Generic_Filter
 
                     var newExp = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
                        .GetMethod("PredicateMore")
-//                       .MakeGenericMethod(typeof(T), Type.GetType("System." + type))
                        .MakeGenericMethod(typeof(T), parameterType)
                        .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.MoreThen, Type.GetTypeCode(parameterType)) });
 

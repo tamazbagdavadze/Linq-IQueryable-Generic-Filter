@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Pair = Linq_IQueryable_Generic_Filter.Pair<string, Linq_IQueryable_Generic_Filter.FilterConstraint>;
 
 namespace Linq_IQueryable_Generic_Filter
 {
