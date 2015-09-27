@@ -17,18 +17,14 @@ namespace Linq_IQueryable_Generic_Filter
     {
         public new object Equals { get; set; }
 
-        public long? LessThen { get; set; }
-        public long? MoreThen { get; set; }
+        public object LessThen { get; set; }
+        public object MoreThen { get; set; }
         
 
         public string ContainsString { get; set; }
-
         public string StartsWith { get; set; }
         public string EndsWith { get; set; }
-
-        public bool? IsNull { get; set; }
-        public bool? IsEmpty { get; set; }
-
+        
         public DateTimeRange? DateTimeRange { get; set; } 
 
         public int? CountMorethan { get; set; }

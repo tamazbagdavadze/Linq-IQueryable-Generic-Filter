@@ -25,7 +25,6 @@ namespace Linq_IQueryable_Generic_Filter
             }
         }
 
-
         public static Expression<Func<T, bool>> CombineOr<T>(this Expression<Func<T, bool>> e1, Expression<Func<T, bool>> e2)
         {
             var lambdaExpression =
@@ -46,20 +45,52 @@ namespace Linq_IQueryable_Generic_Filter
             return lambdaExpression;
         }
 
-        public static Expression<Func<T, bool>> PredicateStartsWith<T>(string propName, string key)
+        #region "Predication Expression Generators"
+
+        public static Expression<Func<T, bool>> PredicateLess<T, TR>(string propName, TR obj)
         {
-            var param = Expression.Parameter(typeof(T), "arg");
+            var param = Expression.Parameter(typeof (T), "arg");
             var member = Expression.Property(param, propName);
 
-            var temp = Expression.Call(Expression.Convert(member, typeof(object)),
-                typeof(object).GetMethod("ToString"));
+            var value = Expression.Constant(obj, typeof (TR));
 
-            var refmethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
-            var value = Expression.Constant(key, typeof(string));
+            var binaryExpression = Expression.LessThan(member, value);
+
+            var lambda = Expression.Lambda(typeof (Func<T, bool>), binaryExpression, param);
+            var expression = (Expression<Func<T, bool>>) lambda;
+
+            return expression;
+        }
+
+        public static Expression<Func<T, bool>> PredicateMore<T, TR>(string propName, TR obj)
+        {
+            var param = Expression.Parameter(typeof (T), "arg");
+            var member = Expression.Property(param, propName);
+
+            var value = Expression.Constant(obj, typeof (TR));
+
+            var res = Expression.LessThan(value, member);
+
+            var lambda = Expression.Lambda(typeof (Func<T, bool>), res, param);
+            var expression = (Expression<Func<T, bool>>) lambda;
+
+            return expression;
+        }
+
+        public static Expression<Func<T, bool>> PredicateStartsWith<T>(string propName, string key)
+        {
+            var param = Expression.Parameter(typeof (T), "arg");
+            var member = Expression.Property(param, propName);
+
+            var temp = Expression.Call(Expression.Convert(member, typeof (object)),
+                typeof (object).GetMethod("ToString"));
+
+            var refmethod = typeof (string).GetMethod("StartsWith", new[] {typeof (string)});
+            var value = Expression.Constant(key, typeof (string));
             var containsMethodExp = Expression.Call(temp, refmethod, value);
 
-            var lambda = Expression.Lambda(typeof(Func<T, bool>), containsMethodExp, param);
-            var expression = (Expression<Func<T, bool>>)lambda;
+            var lambda = Expression.Lambda(typeof (Func<T, bool>), containsMethodExp, param);
+            var expression = (Expression<Func<T, bool>>) lambda;
 
             return expression;
         }
@@ -140,14 +171,7 @@ namespace Linq_IQueryable_Generic_Filter
             var expression = (Expression<Func<T, TR>>) lambda;
             return expression;
         }
-        
-        public static Func<T, TR> Access<T, TR>(string fieldName)
-        {
-            var param = Expression.Parameter(typeof (T), "arg");
-            var member = Expression.Property(param, fieldName);
-            var lambda = Expression.Lambda(typeof (Func<T, TR>), member, param);
-            var compiled = (Func<T, TR>) lambda.Compile();
-            return compiled;
-        }
+
+        #endregion
     }
 }

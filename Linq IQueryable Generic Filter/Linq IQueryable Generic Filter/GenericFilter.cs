@@ -14,16 +14,13 @@ namespace Linq_IQueryable_Generic_Filter
         public static IQueryable<T> Filter<T>(Filter filter, IQueryable<T> list)
         {
             var predicationExpressionList = new List<Expression<Func<T, bool>>>();
-
             
-
             foreach (var args in filter.ConstraintList)
             {
                 var constraintsValues = args.Constraints;
                 var propName = args.Key;
                 var type = args.Type;
-
-
+                
                 #region "Equals"
 
                 if (constraintsValues.Equals != null)
@@ -59,10 +56,31 @@ namespace Linq_IQueryable_Generic_Filter
                 }
 
                 #endregion
-                
-                
-            }
 
+                #region "Less More"
+
+                if (constraintsValues.LessThen != null)
+                {
+                    var newExp = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
+                       .GetMethod("PredicateLess")
+                       .MakeGenericMethod(typeof(T), Type.GetType("System." + type))
+                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.LessThen, type) });
+                    
+                    predicationExpressionList.Add(newExp);
+                }
+
+                if (constraintsValues.MoreThen != null)
+                {
+                    var newExp = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
+                       .GetMethod("PredicateMore")
+                       .MakeGenericMethod(typeof(T), Type.GetType("System." + type))
+                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.MoreThen, type) });
+
+                    predicationExpressionList.Add(newExp);
+                }
+                #endregion
+            }
+            
             Expression<Func<T, bool>> predicationDelegateExpression = filter.Or ?? false
                 ? predicationExpressionList.Aggregate(ExpressionHelpers.CombineOr)
                 : predicationExpressionList.Aggregate(ExpressionHelpers.CombineAnd);
@@ -77,7 +95,6 @@ namespace Linq_IQueryable_Generic_Filter
 
             return resultList;
         }
-        
     }
 }
 
