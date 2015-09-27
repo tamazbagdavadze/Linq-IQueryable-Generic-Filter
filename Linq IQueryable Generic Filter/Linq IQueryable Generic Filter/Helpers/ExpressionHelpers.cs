@@ -10,6 +10,9 @@ namespace Linq_IQueryable_Generic_Filter
 {
     internal static class ExpressionHelpers
     {
+        /// <summary>
+        /// thanks to marc :)
+        /// </summary>
         private class SwapVisitor : ExpressionVisitor
         {
             private readonly Expression _from, _to;
@@ -46,7 +49,7 @@ namespace Linq_IQueryable_Generic_Filter
             return lambdaExpression;
         }
 
-        #region "Predication Expression Generators"
+        #region "Prediction Expression Generators"
 
         public static Expression<Func<T, bool>> PredicateLess<T, TR>(string propName, TR obj)
         {

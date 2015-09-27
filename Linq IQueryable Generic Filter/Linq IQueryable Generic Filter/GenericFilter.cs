@@ -11,7 +11,14 @@ namespace Linq_IQueryable_Generic_Filter
 {
     public static class GenericFilter
     {
-        public static IQueryable<T> Filter<T>(Filter filter, IQueryable<T> list)
+        /// <summary>
+        /// Filters generic IQuerable list by user defined contraints and properties
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="list">List to filter</param>
+        /// <param name="filter">Filter object</param>
+        /// <returns></returns>
+        public static IQueryable<T> Filter<T>(this IQueryable<T> list, Filter filter)
         {
             var predicationExpressionList = new List<Expression<Func<T, bool>>>();
             

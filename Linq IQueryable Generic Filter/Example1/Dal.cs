@@ -21,10 +21,9 @@ namespace Example1
         {
             var persons = Context.People.AsQueryable();
             
-            var filteredPersons = GenericFilter.Filter(filter, persons);
+            var filteredPersons = persons.Filter(filter);
 
             return filteredPersons;
         }
-
     }
 }
