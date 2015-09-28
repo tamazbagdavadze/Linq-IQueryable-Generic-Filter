@@ -9,6 +9,40 @@ namespace Example1
     {
         private Dal Data { get; } = new Dal();
 
+        public void basic()
+        {
+            IQueryable<Person> users = Data.GetPersons();
+
+            Filter filter = new Filter
+            {
+                ConstraintList = new List<Pair>
+                {
+                    new Pair
+                    {
+                        "Name",
+                        new FilterConstraint
+                        {
+                            Equals = "Tazo"
+                        }
+                    },
+                    new Pair
+                    {
+                        "Name",
+                        new FilterConstraint
+                        {
+                            ContainsString = "2"
+                        }
+                    }
+                }
+            };
+
+            List<Person> resultList = users.Filter(filter).ToList();
+
+            ShowData(resultList);
+
+
+        }
+
         public void TestStringAndInt()
         {
             var filter = new Filter
@@ -36,7 +70,7 @@ namespace Example1
                 Or = true
             };
 
-            var personSet = Data.GetPersons(filter).ToList();
+            var personSet = Data.GetPersons().Filter(filter).ToList();
             ShowData(personSet);
         }
 
@@ -58,7 +92,7 @@ namespace Example1
                 Or = true
             };
 
-            var personSet = Data.GetPersons(filter).ToList();
+            var personSet = Data.GetPersons().Filter(filter).ToList();
 
             ShowData(personSet);
         }
@@ -81,7 +115,7 @@ namespace Example1
                 Or = true
             };
 
-            var personSet = Data.GetPersons(filter).ToList();
+            var personSet = Data.GetPersons().Filter(filter).ToList();
 
             ShowData(personSet);
         }

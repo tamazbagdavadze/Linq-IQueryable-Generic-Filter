@@ -13,6 +13,7 @@ namespace Example1
             test.TestStringAndInt();
             test.TestLess();
             test.TestTest();
+            test.basic();
             
 
             Console.ReadLine();

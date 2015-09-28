@@ -16,14 +16,11 @@ namespace Example1
         {
             Context.Database.Log = Console.WriteLine;
         }
+        
 
-        public IEnumerable<Person> GetPersons(Filter filter)
+        public IQueryable<Person> GetPersons()
         {
-            var persons = Context.People.AsQueryable();
-            
-            var filteredPersons = persons.Filter(filter);
-
-            return filteredPersons;
-        }
+            return Context.People.AsQueryable();
+        } 
     }
 }
