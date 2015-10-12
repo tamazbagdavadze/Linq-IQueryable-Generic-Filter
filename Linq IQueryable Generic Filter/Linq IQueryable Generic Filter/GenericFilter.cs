@@ -107,6 +107,46 @@ namespace Linq_IQueryable_Generic_Filter
 
             return list;
         }
+
+        /// <summary>
+        /// Test...
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static IQueryable<T> FilterContains<T>(this IQueryable<T> list, string propertyName, object key)
+        {
+            var expression =  ExpressionHelpers.PredicateContains<T>(propertyName, key.ToString());
+            return list.Where(expression);
+
+//            return list.Filter(new Filter
+//            {
+//                ConstraintList = new List<Pair>
+//                {
+//                    new Pair
+//                    {
+//                        propertyName,
+//                        new FilterConstraint
+//                        {
+//                            ContainsString = key.ToString()
+//                        }
+//                    }
+//                }
+//            });
+        }
+
+        public static IQueryable<T> FilterEquals<T>(this IQueryable<T> list, string propertyName, object value)
+        {
+            var parameterType = value.GetType();
+
+            var expression = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
+                .GetMethod("PredicateEquals")
+                .MakeGenericMethod(typeof(T), parameterType)
+                .Invoke(null, new[] { propertyName, Convert.ChangeType(value, Type.GetTypeCode(parameterType)) });
+
+            return list.Where(expression);
+        }
     }
 }
-

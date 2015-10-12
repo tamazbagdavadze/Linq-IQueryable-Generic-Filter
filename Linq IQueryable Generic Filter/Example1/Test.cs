@@ -120,6 +120,22 @@ namespace Example1
             ShowData(personSet);
         }
 
+        public void TestTest1()
+        {
+
+//            var personSet = Data.GetPersons().FilterContains("Name",34).ToList();
+//            ShowData(personSet);
+
+            IQueryable<Person> personDbList = Data.GetPersons();
+
+
+            personDbList = personDbList.FilterContains("Name", "tazo");
+            personDbList = personDbList.FilterEquals("Age", 16);
+
+        }
+
+
+
         private void ShowData(IEnumerable<Person> persons)
         {
             Console.WriteLine("--------------- Results : ---------------");

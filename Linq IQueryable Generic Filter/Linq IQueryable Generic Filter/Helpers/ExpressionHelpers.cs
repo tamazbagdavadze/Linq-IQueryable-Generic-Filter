@@ -49,7 +49,7 @@ namespace Linq_IQueryable_Generic_Filter
             return lambdaExpression;
         }
 
-        #region "Prediction Expression Generators"
+        #region "Predication Expression Generators"
 
         public static Expression<Func<T, bool>> PredicateLess<T, TR>(string propName, TR obj)
         {
