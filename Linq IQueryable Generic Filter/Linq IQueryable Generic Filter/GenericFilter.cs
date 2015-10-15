@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 
-
 namespace Linq_IQueryable_Generic_Filter
 {
     public static class GenericFilter
@@ -67,26 +66,26 @@ namespace Linq_IQueryable_Generic_Filter
 
                 #region "Less More"
 
-                if (constraintsValues.LessThen != null)
+                if (constraintsValues.LessThan != null)
                 {
-                    var parameterType = constraintsValues.LessThen.GetType();
+                    var parameterType = constraintsValues.LessThan.GetType();
 
                     var newExp = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
                        .GetMethod("PredicateLess")
                        .MakeGenericMethod(typeof(T), parameterType)
-                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.LessThen, Type.GetTypeCode(parameterType)) });
+                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.LessThan, Type.GetTypeCode(parameterType)) });
                     
                     predicationExpressionList.Add(newExp);
                 }
 
-                if (constraintsValues.MoreThen != null)
+                if (constraintsValues.MoreThan != null)
                 {
-                    var parameterType = constraintsValues.MoreThen.GetType();
+                    var parameterType = constraintsValues.MoreThan.GetType();
 
                     var newExp = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
                        .GetMethod("PredicateMore")
                        .MakeGenericMethod(typeof(T), parameterType)
-                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.MoreThen, Type.GetTypeCode(parameterType)) });
+                       .Invoke(null, new[] { propName, Convert.ChangeType(constraintsValues.MoreThan, Type.GetTypeCode(parameterType)) });
 
                     predicationExpressionList.Add(newExp);
                 }
@@ -107,45 +106,62 @@ namespace Linq_IQueryable_Generic_Filter
 
             return list;
         }
-
-        /// <summary>
-        /// Test...
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        /// <param name="propertyName"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static IQueryable<T> FilterContains<T>(this IQueryable<T> list, string propertyName, object key)
-        {
-            var expression =  ExpressionHelpers.PredicateContains<T>(propertyName, key.ToString());
-            return list.Where(expression);
-
-//            return list.Filter(new Filter
-//            {
-//                ConstraintList = new List<Pair>
-//                {
-//                    new Pair
-//                    {
-//                        propertyName,
-//                        new FilterConstraint
-//                        {
-//                            ContainsString = key.ToString()
-//                        }
-//                    }
-//                }
-//            });
-        }
+        
 
         public static IQueryable<T> FilterEquals<T>(this IQueryable<T> list, string propertyName, object value)
         {
             var parameterType = value.GetType();
+            var type = Type.GetTypeCode(parameterType);
 
             var expression = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
                 .GetMethod("PredicateEquals")
                 .MakeGenericMethod(typeof(T), parameterType)
-                .Invoke(null, new[] { propertyName, Convert.ChangeType(value, Type.GetTypeCode(parameterType)) });
+                .Invoke(null, new[] { propertyName, Convert.ChangeType(value, type) });
 
+            return list.Where(expression);
+        }
+
+        public static IQueryable<T> FilterLessThan<T>(this IQueryable<T> list, string propertyName, object value)
+        {
+            var parameterType = value.GetType();
+            var type = Type.GetTypeCode(parameterType);
+
+            var expression = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
+               .GetMethod("PredicateLess")
+               .MakeGenericMethod(typeof(T), parameterType)
+               .Invoke(null, new[] { propertyName, Convert.ChangeType(value, type) });
+
+            return list.Where(expression);
+        }
+
+        public static IQueryable<T> FilterMoreThan<T>(this IQueryable<T> list, string propertyName, object value)
+        {
+            var parameterType = value.GetType();
+            var type = Type.GetTypeCode(parameterType);
+
+            var expression = (Expression<Func<T, bool>>)typeof(ExpressionHelpers)
+               .GetMethod("PredicateMore")
+               .MakeGenericMethod(typeof(T), parameterType)
+               .Invoke(null, new[] { propertyName, Convert.ChangeType(value, type) });
+
+            return list.Where(expression);
+        }
+
+        public static IQueryable<T> FilterContainsString<T>(this IQueryable<T> list, string propertyName, object key)
+        {
+            var expression = ExpressionHelpers.PredicateContains<T>(propertyName, key.ToString());
+            return list.Where(expression);
+        }
+
+        public static IQueryable<T> FilterEndWith<T>(this IQueryable<T> list, string propertyName, object value)
+        {
+            var expression = ExpressionHelpers.PredicateStartsWith<T>(propertyName, value.ToString());
+            return list.Where(expression);
+        }
+
+        public static IQueryable<T> FilterStartsWith<T>(this IQueryable<T> list, string propertyName, object value)
+        {
+            var expression = ExpressionHelpers.PredicateStartsWith<T>(propertyName, value.ToString());
             return list.Where(expression);
         }
     }

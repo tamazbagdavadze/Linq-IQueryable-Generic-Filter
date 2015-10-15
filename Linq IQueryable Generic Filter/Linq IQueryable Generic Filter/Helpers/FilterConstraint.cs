@@ -16,8 +16,8 @@ namespace Linq_IQueryable_Generic_Filter
     {
         public new object Equals { get; set; }
 
-        public object LessThen { get; set; }
-        public object MoreThen { get; set; }
+        public object LessThan { get; set; }
+        public object MoreThan { get; set; }
         
 
         public string ContainsString { get; set; }
@@ -30,7 +30,7 @@ namespace Linq_IQueryable_Generic_Filter
         //TODO Random shit
     }
     
-    public class Pair : IEnumerable
+    public class Pair : IEnumerable // TODO :(
     {
         public string Key;
 

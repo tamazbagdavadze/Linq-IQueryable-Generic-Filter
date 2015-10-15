@@ -85,7 +85,7 @@ namespace Example1
                         "BirthDate",
                         new FilterConstraint
                         {
-                            LessThen = DateTime.Parse("10/10/2001 12:00:00 AM") //DateTime.Now
+                            LessThan = DateTime.Parse("10/10/2001 12:00:00 AM") //DateTime.Now
                         }
                     }
                 },
@@ -129,7 +129,7 @@ namespace Example1
             IQueryable<Person> personDbList = Data.GetPersons();
 
 
-            personDbList = personDbList.FilterContains("Name", "tazo");
+            personDbList = personDbList.FilterContainsString("Name", "tazo");
             personDbList = personDbList.FilterEquals("Age", 16);
 
         }
